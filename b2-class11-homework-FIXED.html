@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 Job Skills 1 - Class 11 Homework</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#5B5091;min-height:100vh;padding:20px}
+.container{max-width:860px;margin:0 auto}
+.header,.card{background:#fff;border-radius:18px;padding:28px;margin-bottom:18px}
+.header{text-align:center}.header h1{color:#5B5091;font-size:1.55em;margin-bottom:6px}.header p{color:#777}
+.section{display:none}.section.active{display:block}
+label{font-weight:600;color:#333;display:block;margin-bottom:8px}
+input[type="text"],select,textarea{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-family:inherit}
+textarea{min-height:170px;resize:vertical}
+input[type="text"]:focus,select:focus,textarea:focus{outline:none;border-color:#5B5091}
+.btn{background:#5B5091;color:#fff;border:none;padding:14px 28px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;width:100%;margin-top:12px}
+.btn:hover{background:#4a4080}.btn-orange{background:#F5A623}
+.progress{height:8px;background:#e0e0e0;border-radius:4px;margin-bottom:18px}.progress-bar{height:100%;background:#F5A623;border-radius:4px}
+.reading-box,.question,.feedback,.transcript-box,.tip-box{background:#f8f9fa;border-radius:12px;padding:18px;margin-top:14px;border:1px solid #eee}
+.reading-box{border-left:4px solid #5B5091;line-height:1.7}
+.question h4{margin-bottom:12px;color:#333}
+.option{padding:12px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;margin-top:8px;display:flex;gap:10px;align-items:center}
+.option:hover{border-color:#5B5091;background:#f8f6ff}.option.selected{border-color:#5B5091;background:#f0edff}
+.circle{width:18px;height:18px;border:2px solid #ccc;border-radius:50%;flex-shrink:0}.option.selected .circle{background:#5B5091;border-color:#5B5091}
+.word-bank{display:flex;flex-wrap:wrap;gap:10px;padding:15px;background:#f5f5f5;border-radius:12px;margin-top:10px}
+.word{background:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;border:2px solid #e0e0e0}.word.selected{border-color:#5B5091;background:#f0edff}.word.used{opacity:.4;pointer-events:none}
+.drop-row{display:flex;gap:12px;align-items:center;margin-top:10px}.drop-def{flex:1;background:#f8f9fa;padding:12px;border-radius:8px}.drop-target{min-width:130px;min-height:44px;border:2px dashed #ccc;border-radius:8px;padding:10px;text-align:center;cursor:pointer}.drop-target.filled{border-style:solid;border-color:#5B5091;background:#f8f6ff}
+.record-btn{width:84px;height:84px;border-radius:50%;background:#fff;border:3px solid #5B5091;cursor:pointer;margin:18px auto;display:flex;align-items:center;justify-content:center}.record-btn.recording{border-color:#ef4444;animation:pulse 1.4s infinite}
+.record-dot{width:24px;height:24px;background:#5B5091;border-radius:50%}.record-btn.recording .record-dot{background:#ef4444;border-radius:4px;width:20px;height:20px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}
+.timer{text-align:center;font-size:28px;font-weight:700;color:#5B5091}.status{text-align:center;color:#666;margin-top:8px}
+audio{width:100%;margin-top:14px}.hidden{display:none}
+.score-card{background:linear-gradient(135deg,#5B5091,#7B6DB5);border-radius:20px;padding:35px;color:#fff;text-align:center}.score-big{font-size:4em;font-weight:700}
+.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}.scores>div{background:rgba(255,255,255,.15);border-radius:12px;padding:10px}.scores label{font-size:.75em;color:#fff;opacity:.9}.scores span{font-size:1.3em;font-weight:700;display:block}
+.small{color:#777;margin-top:8px;font-size:14px}.note{background:#fff7e8;border:1px solid #f3d796;color:#7a5b00;border-radius:12px;padding:12px;margin-top:12px}.tip-box strong{color:#5B5091}
+@media(max-width:700px){.scores{grid-template-columns:repeat(3,1fr)} .drop-row{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>B2 Job Skills 1 - Class 11 Homework</h1><p>Resume and Job Search &bull; Job Platforms and Job Listings</p></div>
+<div class="section active" id="start"><div class="card">
+<label>Your Full Name</label>
+<input type="text" id="studentName" placeholder="Enter your name...">
+<input type="hidden" id="teacherName" value="">
+<label style="margin-top:12px">Your Class</label>
+<select id="className" style="width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px" onchange="setTeacher(this)">
+<option value="">-- Select your class --</option>
+<optgroup label="Angela Gradiska">
+<option value="3096" data-teacher="Angela Gradiska">3096 - Tue/Thu 6:30 PM (Angela)</option>
+<option value="3100" data-teacher="Angela Gradiska">3100 - Tue/Thu 8:30 PM (Angela)</option>
+</optgroup>
+<optgroup label="Jonelle Williams">
+<option value="3089" data-teacher="Jonelle Williams">3089 - Mon/Wed 6:30 PM (Jonelle)</option>
+<option value="3092" data-teacher="Jonelle Williams">3092 - Mon/Wed 8:30 PM (Jonelle)</option>
+</optgroup>
+</select>
+<button class="btn" onclick="startQuiz()">Start Homework &rarr;</button>
+<div class="note">This homework practices Class 11 content: online job-search platforms, job-listing vocabulary, and expressing job preferences.</div>
+</div></div>
+<div class="section" id="s1"><div class="card">
+<div class="progress"><div class="progress-bar" style="width:20%"></div></div>
+<h2>1. Reading</h2>
+<div class="reading-box"><p><strong>Searching for the Right Job</strong></p>
+<p>Nina is looking for a new job online. She usually checks out Indeed and LinkedIn because they have many listings. This week, she found a hybrid administrative job that looks interesting.</p>
+<p>She sent in her resume yesterday, but she knows that an Applicant Tracking System may parse her application before a real person reads it. She is also open to contract work, although she prefers a full-time position with benefits.</p>
+<p>Last month, Nina had to turn down one job offer because the pay was too low. She still hopes to get into the marketing field, so she keeps applying for positions that match her goals.</p></div>
+<div id="readingQuestions"></div>
+<button class="btn" onclick="checkS1()">Continue &rarr;</button>
+</div></div>
+<div class="section" id="s2"><div class="card">
+<div class="progress"><div class="progress-bar" style="width:40%"></div></div>
+<h2>2. Vocabulary</h2>
+<p class="small">Match the job-search verb or phrase to its meaning.</p>
+<div class="word-bank" id="wordBank"></div>
+<div id="vocabDrops"></div>
+<button class="btn" onclick="checkS2()">Continue &rarr;</button>
+<div class="tip-box"><strong>Real-life English tip:</strong> When you talk about jobs in English, it sounds more natural to say <em>I applied for</em> a job, <em>I sent in</em> my resume, or <em>I checked out</em> the listing.</div>
+</div></div>
+<div class="section" id="s3"><div class="card">
+<div class="progress"><div class="progress-bar" style="width:60%"></div></div>
+<h2>3. Writing</h2>
+<p class="small">Write 6&ndash;8 sentences about a job posting that interests you. Start by naming the position and website, then explain why it attracts you.</p>
+<textarea id="writing" placeholder="I found a job posting for...
+I saw it on...
+The position interests me because...
+I prefer...
+I would apply because..."></textarea>
+<p class="small" style="text-align:right">Words: <span id="wc">0</span></p>
+<div class="tip-box"><strong>Grammar tip:</strong> To explain job preferences clearly, use phrases like <em>I prefer</em>, <em>I am interested in</em>, and <em>I would like to</em>.</div>
+<div id="wFeedback" class="feedback" style="display:none"></div>
+<button class="btn" id="wBtn" onclick="checkWriting()">Get Feedback &rarr;</button>
+<button class="btn" id="wNext" onclick="showSection('s4')" style="display:none">Continue &rarr;</button>
+</div></div>
+<div class="section" id="s4"><div class="card">
+<div class="progress"><div class="progress-bar" style="width:80%"></div></div>
+<h2>4. Speaking</h2>
+<p class="small">Speak for 30&ndash;45 seconds about what kind of job you are looking for and why. Mention a website or platform if you can.</p>
+<div class="record-btn" id="recBtn" onclick="toggleRec()"><div class="record-dot"></div></div>
+<div class="timer" id="timer">0:00</div>
+<div class="status" id="recStatus">Click to start recording</div>
+<div id="transcriptBox" class="transcript-box" style="display:none"></div>
+<div id="sFeedback" class="feedback" style="display:none"></div>
+<button class="btn" id="sBtn" onclick="checkSpeaking()">Continue &rarr;</button>
+</div></div>
+<div class="section" id="s5"><div class="card">
+<div class="progress"><div class="progress-bar" style="width:100%"></div></div>
+<h2>5. Grammar / Usage</h2>
+<div id="grammarQuestions"></div>
+<button class="btn btn-orange" onclick="submitFinal()">Submit Homework &#10003;</button>
+</div></div>
+<div class="section" id="results"><div class="score-card">
+<p style="opacity:.85">Homework Complete!</p>
+<div class="score-big" id="finalPct">0%</div>
+<p id="studentDisplay"></p>
+<div class="scores">
+<div><label>Reading</label><span id="scL">0/3</span></div>
+<div><label>Vocab</label><span id="scV">0/6</span></div>
+<div><label>Writing</label><span id="scW">0/20</span></div>
+<div><label>Speaking</label><span id="scS">0/20</span></div>
+<div><label>Grammar</label><span id="scG">0/8</span></div>
+</div>
+<button class="btn btn-orange" style="margin-top:20px" id="submitBtn" onclick="submitToTeacher()">Finish &rarr;</button>
+<div id="submitStatus" style="display:none;margin-top:16px;background:#f0fdf4;border:2px solid #22c55e;border-radius:12px;padding:16px;text-align:center;color:#15803d"></div>
+</div></div>
+</div>
+<script>
+let submitted=false;
+function setTeacher(sel){var opt=sel.options[sel.selectedIndex];document.getElementById('teacherName').value=opt?(opt.getAttribute('data-teacher')||''):''}
+const SESSION='11';
+let name='',scores={l:0,v:0,w:0,s:0,g:0},writingText='',spokenText='';
+let selectedWord=null,isRec=false,recTime=0,recTimer=null,recognition=null;
+let readingAnswers=[],grammarAnswers=[];
+const readingQBank=[{"q": "Which websites does Nina usually check?", "opts": ["Indeed and LinkedIn", "Glassdoor and TikTok", "Monster and YouTube"], "correct": 0}, {"q": "What kind of job did Nina find this week?", "opts": ["A hybrid administrative job", "A hospital internship", "A restaurant job"], "correct": 0}, {"q": "Why did Nina turn down a job offer last month?", "opts": ["The commute was long", "The pay was too low", "The company closed"], "correct": 1}, {"q": "What field does Nina hope to get into?", "opts": ["Healthcare", "Marketing", "Construction"], "correct": 1}, {"q": "What kind of work does Nina prefer?", "opts": ["Only freelance", "Full-time with benefits", "Only unpaid internships"], "correct": 1}];
+const vocabPairs=[{"word": "apply for", "def": "to formally ask for a job"}, {"word": "send in", "def": "to submit documents like a resume"}, {"word": "parse", "def": "for a computer system to scan and analyze text"}, {"word": "turn down", "def": "to refuse an offer"}, {"word": "get into", "def": "to enter a field or career area"}, {"word": "check out", "def": "to look at or explore"}, {"word": "job listing", "def": "an advertisement for an available position"}, {"word": "ATS", "def": "software that scans resumes for keywords before a human reads them"}];
+const grammarQBank=[{"q": "Choose the best sentence:", "opts": ["I applied for a hybrid job yesterday.", "I applied a hybrid job yesterday.", "I apply for a hybrid job yesterday."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["She sent in her resume last night.", "She sent her resume in last night to.", "She send in her resume last night."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["I am interested in a full-time position.", "I am interested on a full-time position.", "I interested in a full-time position."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["He had to turn down the offer because the pay was low.", "He had to turn down because the pay was low the offer.", "He turned down to the offer because the pay was low."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["I would like to get into marketing.", "I would like get into marketing.", "I would like to getting into marketing."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["She checked out several listings before she applied.", "She checked several listings out before she applied.", "Both of these are natural."], "correct": 2}, {"q": "Choose the best sentence:", "opts": ["My resume may be parsed by an ATS.", "My resume may be passed by an ATS.", "My resume may be praised by an ATS."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["I prefer remote or hybrid work.", "I prefer work remote or hybrid.", "I am prefer remote or hybrid work."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["They submitted their applications on Monday.", "They submit their applications last Monday.", "They submitting on Monday their applications."], "correct": 0}, {"q": "Choose the best sentence:", "opts": ["I found the position on LinkedIn and it looks interesting.", "I found the position in LinkedIn and it looks interesting.", "I found the position on LinkedIn and it looking interesting."], "correct": 0}];
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){
+  name=document.getElementById('studentName').value.trim();
+  if(!name){alert('Please enter your name');return;}
+  if(!document.getElementById('className').value){alert('Please select your class');return;}
+  setTeacher(document.getElementById('className'));
+  initQuestions();showSection('s1');
+}
+function sel(el){el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
+function initQuestions(){
+  const rQs=shuffle([...readingQBank]).slice(0,3);let rHTML='';
+  rQs.forEach((q,i)=>{const opts=q.opts.map((t,idx)=>({text:t,isCorrect:idx===q.correct}));shuffle(opts);readingAnswers[i]=opts.findIndex(o=>o.isCorrect);rHTML+=`<div class="question"><h4>${i+1}. ${q.q}</h4>`;opts.forEach((opt,j)=>rHTML+=`<div class="option" onclick="sel(this)" data-v="${j}"><div class="circle"></div>${opt.text}</div>`);rHTML+='</div>';});
+  document.getElementById('readingQuestions').innerHTML=rHTML;
+  let bankHTML='',dropHTML='';const pairs=shuffle([...vocabPairs]).slice(0,6);const words=shuffle(pairs.map(p=>p.word));
+  words.forEach(w=>bankHTML+=`<div class="word" onclick="pickWord(this)">${w}</div>`);
+  pairs.forEach(p=>dropHTML+=`<div class="drop-row"><div class="drop-def">${p.def}</div><div class="drop-target" data-a="${p.word}" onclick="dropWord(this)"></div></div>`);
+  document.getElementById('wordBank').innerHTML=bankHTML;document.getElementById('vocabDrops').innerHTML=dropHTML;
+  const gQs=shuffle([...grammarQBank]).slice(0,8);let gHTML='';
+  gQs.forEach((q,i)=>{const opts=q.opts.map((t,idx)=>({text:t,isCorrect:idx===q.correct}));shuffle(opts);grammarAnswers[i]=opts.findIndex(o=>o.isCorrect);gHTML+=`<div class="question" data-c="${grammarAnswers[i]}"><h4>${i+1}. ${q.q}</h4>`;opts.forEach((opt,j)=>gHTML+=`<div class="option" onclick="sel(this)" data-v="${j}"><div class="circle"></div>${opt.text}</div>`);gHTML+='</div>';});
+  document.getElementById('grammarQuestions').innerHTML=gHTML;
+}
+function checkS1(){let c=0;document.querySelectorAll('#readingQuestions .question').forEach((q,i)=>{const s=q.querySelector('.option.selected');if(s&&parseInt(s.dataset.v)===readingAnswers[i])c++;});scores.l=c;showSection('s2');}
+function pickWord(el){document.querySelectorAll('.word').forEach(w=>w.classList.remove('selected'));el.classList.add('selected');selectedWord=el;}
+function dropWord(target){if(!selectedWord||target.classList.contains('filled'))return;target.textContent=selectedWord.textContent;target.classList.add('filled');selectedWord.classList.add('used');selectedWord.classList.remove('selected');selectedWord=null;}
+function checkS2(){let c=0;document.querySelectorAll('.drop-target').forEach(t=>{if(t.textContent===t.dataset.a)c++;});scores.v=c;showSection('s3');}
+document.addEventListener('DOMContentLoaded',function(){var w=document.getElementById('writing');if(w){w.addEventListener('input',function(){document.getElementById('wc').textContent=this.value.trim().split(/\s+/).filter(Boolean).length;});}});
+function checkWriting(){
+  writingText=document.getElementById('writing').value;
+  const text=writingText.toLowerCase();
+  let score=0;
+  const targetWords=['apply','applied','job posting','indeed','linkedin','hybrid','full-time','contract','benefits','interested','position','resume','listing','platform'];
+  score+=Math.min(8,targetWords.filter(x=>text.includes(x)).length*2);
+  if(text.includes('because'))score+=3;
+  const wc=text.split(/\s+/).filter(Boolean).length;
+  if(wc>=60)score+=6;else if(wc>=40)score+=4;else if(wc>=20)score+=2;
+  scores.w=Math.min(20,score);
+  document.getElementById('wFeedback').innerHTML='<b>Score: '+scores.w+'/20</b><br>Scored on job-search vocabulary, reasoning (because), and length. Clear explanation of your job preference matters most.';
+  document.getElementById('wFeedback').style.display='block';
+  document.getElementById('wBtn').style.display='none';
+  document.getElementById('wNext').style.display='block';
+}
+function toggleRec(){if(!isRec) startRec(); else stopRec();}
+function startRec(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('Speech recognition not supported. Please use Chrome or Safari.');return;}
+  spokenText='';
+  var box=document.getElementById('transcriptBox');
+  if(box){box.textContent='Listening...';box.style.display='block';}
+  isRec=true;recTime=0;
+  document.getElementById('recBtn').classList.add('recording');
+  document.getElementById('recStatus').textContent='Recording... Click again to stop';
+  recTimer=setInterval(function(){recTime++;document.getElementById('timer').textContent=Math.floor(recTime/60)+':'+String(recTime%60).padStart(2,'0');},1000);
+  recognition=new SR();
+  recognition.continuous=false;recognition.interimResults=true;recognition.lang='en-US';
+  recognition.onstart=function(){document.getElementById('recStatus').textContent='Microphone active - speak now';};
+  recognition.onresult=function(e){
+    var interim='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)spokenText+=e.results[i][0].transcript+' ';
+      else interim+=e.results[i][0].transcript;
+    }
+    var tb=document.getElementById('transcriptBox');
+    if(tb){tb.textContent=(spokenText+interim).trim()||'Listening...';tb.style.display='block';}
+  };
+  recognition.onerror=function(e){
+    var st=document.getElementById('recStatus');
+    if(e.error==='not-allowed'||e.error==='permission-denied'){
+      if(st)st.textContent='Microphone blocked - allow access in your browser and try again.';
+      isRec=false;clearInterval(recTimer);document.getElementById('recBtn').classList.remove('recording');
+    } else if(e.error!=='no-speech'){if(st)st.textContent='Error: '+e.error+' - tap to try again';}
+  };
+  recognition.onend=function(){if(isRec){try{recognition.start();}catch(err){}}};
+  try{recognition.start();}catch(e){
+    document.getElementById('recStatus').textContent='Could not start: '+e.message;
+    isRec=false;clearInterval(recTimer);
+  }
+}
+function stopRec(){
+  isRec=false;clearInterval(recTimer);
+  if(recognition){try{recognition.stop();}catch(e){} recognition=null;}
+  document.getElementById('recBtn').classList.remove('recording');
+  document.getElementById('recStatus').textContent='Recording saved!';
+}
+function checkSpeaking(){
+  var text=spokenText.toLowerCase();
+  var score=recTime>=30?8:recTime>=15?5:recTime>=5?3:1;
+  var items=['job','apply','linkedin','indeed','hybrid','full-time','contract','benefits','position','resume','listing','platform','interested','prefer'];
+  score+=Math.min(6,items.filter(x=>text.includes(x)).length)*2;
+  scores.s=Math.min(20,score);
+  document.getElementById('sFeedback').innerHTML='<b>Score: '+scores.s+'/20</b><br>Speaking is scored on duration and use of job-search vocabulary.';
+  document.getElementById('sFeedback').style.display='block';
+  showSection('s5');
+}
+function submitFinal(){let c=0;document.querySelectorAll('#grammarQuestions .question').forEach((q,i)=>{const s=q.querySelector('.option.selected');const a=parseInt(q.dataset.c);if(s&&parseInt(s.dataset.v)===a)c++;});scores.g=c;const total=scores.l+scores.v+scores.w+scores.s+scores.g;const pct=Math.round(total/57*100);document.getElementById('finalPct').textContent=pct+'%';document.getElementById('studentDisplay').textContent=name;document.getElementById('scL').textContent=scores.l+'/3';document.getElementById('scV').textContent=scores.v+'/6';document.getElementById('scW').textContent=scores.w+'/20';document.getElementById('scS').textContent=scores.s+'/20';document.getElementById('scG').textContent=scores.g+'/8';showSection('results');}
+function submitToTeacher(){
+  if(submitted)return;submitted=true;
+  var btn=document.getElementById('submitBtn');
+  var status=document.getElementById('submitStatus');
+  if(btn){btn.disabled=true;btn.textContent='Submitting...';}
+  if(status){status.style.display='none';}
+
+  // FIX: re-read the textarea so any last-minute edits are submitted
+  var ta=document.getElementById('writing');
+  if(ta && ta.value){ writingText=ta.value; }
+
+  var total=scores.l+scores.v+scores.w+scores.s+scores.g;
+  var formData=new FormData();
+  formData.append('entry.154629934',name);
+  formData.append('entry.771629595',document.getElementById('className').value);
+  formData.append('entry.1564061356',SESSION);
+  formData.append('entry.1994438750',scores.l+'/3');
+  formData.append('entry.1169985852',scores.v+'/6');
+  formData.append('entry.66378887',scores.w+'/20');
+  formData.append('entry.665897330',scores.s+'/20');
+  formData.append('entry.1528226896',scores.g+'/8');
+  formData.append('entry.543147037',Math.round(total/57*100)+'%');
+  formData.append('entry.301386877',writingText||'');
+  formData.append('entry.1035810181',spokenText||'No transcript captured');
+  formData.append('entry.1451249480',document.getElementById('teacherName').value||'');
+
+  function showSuccess(){
+    if(btn){btn.textContent='Submitted ✓';btn.style.background='#22c55e';btn.disabled=true;}
+    if(status){status.textContent='✅ Homework submitted! Your teacher received your work.';status.style.display='block';}
+  }
+  function showFailure(){
+    submitted=false;
+    if(btn){btn.disabled=false;btn.textContent='Failed - Tap to Retry';btn.style.background='#ef4444';}
+    if(status){status.textContent='⚠️ Submission failed. Check your internet and tap Retry.';status.style.display='block';}
+  }
+
+  // FIX: no-cors fetch can hang silently on mobile; show success within 6s regardless
+  var done=false;
+  var timeoutId=setTimeout(function(){if(!done){done=true;showSuccess();}},6000);
+
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLSe3-96EKbLIQ8Cm0oU6FFzvpTNqwBniK0mEHN5_nge5wr0UtA/formResponse',{method:'POST',mode:'no-cors',body:formData})
+  .then(function(){
+    if(done)return;
+    done=true;clearTimeout(timeoutId);
+    showSuccess();
+  }).catch(function(){
+    if(done)return;
+    done=true;clearTimeout(timeoutId);
+    showFailure();
+  });
+}
+</script>
+</body>
+</html>
