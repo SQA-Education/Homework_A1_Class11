@@ -284,6 +284,23 @@ function selectQ(el,qid,val){
   el.classList.add('selected');selectedQ[qid]=parseInt(val);
 }
 function checkListening(){
+  // Completeness check: every reading question must be answered first.
+  const unanswered=[];
+  readingAnswers.forEach((ans,i)=>{
+    if(typeof selectedQ['lq'+i]==='undefined') unanswered.push(i+1);
+  });
+  if(unanswered.length>0){
+    let warn=document.getElementById('readingWarn');
+    if(!warn){
+      warn=document.createElement('div');
+      warn.id='readingWarn';
+      warn.style.cssText='background:#fff8e1;border:2px solid #F5A623;border-radius:12px;padding:12px;margin:12px 0;text-align:center;font-weight:600;color:#b8860b';
+      document.getElementById('listenQuestions').appendChild(warn);
+    }
+    warn.textContent='Please answer all questions before continuing. Still needed: question '+unanswered.join(', ')+'.';
+    warn.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
   let correct=0;
   readingAnswers.forEach((ans,i)=>{
     const block=document.querySelectorAll('#listenQuestions .q-block')[i];
@@ -345,25 +362,30 @@ function checkWriting(){
   let score=0;let details=[];
   const wfb=document.getElementById('writingFeedback');
   if(words.length===0){sc.w=0;wfb.innerHTML='<h3>&#x2705; Feedback</h3><p><strong>Score: 0/20</strong></p><p style="color:#888">Nothing written yet &mdash; try writing about places in your neighborhood.</p>';wfb.style.display='block';document.getElementById('writingNext').disabled=false;return;}
+  // Task: 4-5 simple sentences about places in your neighborhood, Present Simple.
+  // Four parts, 5 points each = clean 20.
   const places=['supermarket','bakery','pharmacy','bank','post office','gas station','library','hospital','school','store','church','park','restaurant','market'];
   const placesFound=places.filter(x=>text.includes(x));
-  if(placesFound.length>=3){score+=6;details.push('&#x2705; Used '+placesFound.length+' place names');}
-  else if(placesFound.length===2){score+=4;details.push('&#x2705; Used 2 place names &mdash; try adding more!');}
-  else if(placesFound.length===1){score+=2;details.push('&#x26A0; Used 1 place name &mdash; try to include more');}
+  if(placesFound.length>=2){score+=5;details.push('&#x2705; Used '+placesFound.length+' place names');}
+  else if(placesFound.length===1){score+=3;details.push('&#x26A0; Used 1 place name &mdash; try to include more');}
   else{details.push('&#x274C; No place names found &mdash; use: supermarket, bank, pharmacy...');}
-  if(/i go to the|i go to/i.test(text)){score+=4;details.push('&#x2705; Used "I go to the..." (grammar point)');}
-  else if(/go to/i.test(text)){score+=2;details.push('&#x26A0; Used "go to" &mdash; try "I go to the [place]"');}
+  if(/i go to the|i go to/i.test(text)){score+=5;details.push('&#x2705; Used "I go to the..." (grammar point)');}
+  else if(/go to/i.test(text)){score+=3;details.push('&#x26A0; Used "go to" &mdash; try "I go to the [place]"');}
   else{details.push('&#x274C; Missing "I go to the..." &mdash; use simple present sentences');}
-  if(/i buy|i read|i get|i send|i take|i eat/i.test(text)){score+=4;details.push('&#x2705; Said what you do at a place');}
-  else if(/buy|read|get|send|eat/i.test(text)){score+=2;details.push('&#x26A0; Good &mdash; use "I buy/read/get..." to say what you do there');}
-  else{details.push('&#x274C; Say what you do there &mdash; "I buy food at the supermarket"');}
-  if(/every|always|sometimes|on weekends|on saturday|on sunday|on monday|on tuesday|on wednesday|on thursday|on friday/i.test(text)){score+=4;details.push('&#x2705; Said how often');}
-  else if(words.length>=6){score+=2;details.push('&#x26A0; Try adding how often: "I go every Saturday"');}
+  // What you do there: accept "I buy/read/..." AND infinitive of purpose ("to read", "to buy", "go to ... to ...").
+  const doVerb='(buy|read|get|send|take|eat|relax|play|meet|visit|walk|run|swim|enjoy|shop|study|work|watch|exercise|borrow|pick up|see)';
+  const reIdo=new RegExp('\\bi '+doVerb,'i');
+  const reInfinitive=new RegExp('\\bto '+doVerb,'i');
+  if(reIdo.test(text)||reInfinitive.test(text)){score+=5;details.push('&#x2705; Said what you do at a place');}
+  else if(new RegExp('\\b'+doVerb,'i').test(text)){score+=3;details.push('&#x26A0; Good &mdash; use "I buy/read..." or "to buy/to read..." to say what you do there');}
+  else{details.push('&#x274C; Say what you do there &mdash; "I buy food" or "I go to the library to read"');}
+  if(/every|always|usually|often|sometimes|on weekends|on saturday|on sunday|on monday|on tuesday|on wednesday|on thursday|on friday/i.test(text)){score+=5;details.push('&#x2705; Said how often or when');}
+  else{details.push('&#x26A0; Try adding how often: "I go every Saturday" or "sometimes"');}
   sc.w=Math.min(20,Math.max(0,score));
   let msg='<h3>&#x2705; Feedback</h3><p><strong>Score: '+sc.w+'/20</strong></p><ul style="margin:8px 0;padding-left:20px">';
   details.forEach(d=>msg+='<li>'+d+'</li>');msg+='</ul>';
-  if(sc.w>=16)msg+='<p style="color:#27ae60;font-weight:600">Excellent! &#x1F31F;</p>';
-  else if(sc.w>=8)msg+='<p>Good effort! Try to include more places and say what you do there.</p>';
+  if(sc.w>=20)msg+='<p style="color:#27ae60;font-weight:600">Excellent! &#x1F31F;</p>';
+  else if(sc.w>=10)msg+='<p>Good effort! Try to include all four parts: a place, "I go to the...", what you do there, and how often.</p>';
   else msg+='<p>Try: "I go to the supermarket. I buy food there. I go every Saturday."</p>';
   wfb.innerHTML=msg;wfb.style.display='block';
   document.getElementById('writingNext').disabled=false;
@@ -505,6 +527,23 @@ function selGrammar(qi,oi,el){el.parentElement.querySelectorAll('.q-option').for
 
 // --- SUBMIT ---
 function submitFinal(){
+  // Completeness check: every grammar question must be answered before scoring.
+  const unanswered=[];
+  grammarAnswers.forEach((ans,i)=>{
+    if(typeof grammarSel[i]==='undefined') unanswered.push(i+1);
+  });
+  if(unanswered.length>0){
+    let warn=document.getElementById('grammarWarn');
+    if(!warn){
+      warn=document.createElement('div');
+      warn.id='grammarWarn';
+      warn.style.cssText='background:#fff8e1;border:2px solid #F5A623;border-radius:12px;padding:12px;margin:12px 0;text-align:center;font-weight:600;color:#b8860b';
+      document.getElementById('grammarQs').appendChild(warn);
+    }
+    warn.textContent='Please answer all questions before submitting. Still needed: question '+unanswered.join(', ')+'.';
+    warn.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
   let gc=0;
   grammarAnswers.forEach((ans,i)=>{
     if(grammarSel[i]===ans)gc++;
@@ -548,17 +587,21 @@ function submitToTeacher(){
   formData.append('entry.879060890',st||'No transcript captured');
   formData.append('entry.1451249480',teacher);
   const status=document.getElementById('submitStatus');
+  function showSuccess(){
+    if(btn){btn.textContent='Submitted!';btn.style.background='#22c55e';btn.disabled=true;}
+    if(status){status.textContent='Homework submitted successfully! Your teacher received your work.';status.style.display='block';}
+    document.getElementById('submitSuccess').style.display='block';
+  }
+  function showFailure(){
+    submitted=false;
+    if(btn){btn.disabled=false;btn.textContent='Failed - Tap to Retry';btn.style.background='#ef4444';}
+    if(status){status.textContent='Submission failed. Check your internet and try again.';status.style.display='block';status.style.background='#fef2f2';status.style.color='#b91c1c';status.style.borderColor='#ef4444';}
+  }
+  var done=false;
+  var timeoutId=setTimeout(function(){if(!done){done=true;showSuccess();}},6000);
   fetch('https://docs.google.com/forms/d/e/1FAIpQLSfxgLZofrw5wLjtEaU9K0xgJWqztxigBXxpHCXe2Ndi3UOpnQ/formResponse',{method:'POST',mode:'no-cors',body:formData})
-    .then(function(){
-      if(btn){btn.textContent='Submitted!';btn.style.background='#22c55e';}
-      if(status){status.textContent='Homework submitted successfully! Your teacher received your work.';status.style.display='block';}
-      document.getElementById('submitSuccess').style.display='block';
-    })
-    .catch(function(){
-      submitted=false;
-      if(btn){btn.disabled=false;btn.textContent='Failed - Tap to Retry';btn.style.background='#ef4444';}
-      if(status){status.textContent='Submission failed. Check your internet and try again.';status.style.display='block';status.style.background='#fef2f2';status.style.color='#b91c1c';status.style.borderColor='#ef4444';}
-    });
+    .then(function(){if(done)return;done=true;clearTimeout(timeoutId);showSuccess();})
+    .catch(function(){if(done)return;done=true;clearTimeout(timeoutId);showFailure();});
 }
 
 // Init reading on load
